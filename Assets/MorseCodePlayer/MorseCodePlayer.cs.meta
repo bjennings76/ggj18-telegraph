@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b36019f5a9982f74db4baa95c605a052
+timeCreated: 1517030443
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - audioSource: {instanceID: 0}
+  - dotSound: {fileID: 8300000, guid: 2c77c853158749c44817d09364c0f48e, type: 3}
+  - dashSound: {fileID: 8300000, guid: 3b9d6758953762c449aadc50e0496ed4, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

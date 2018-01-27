@@ -6,5 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Dialog Example.unity
-    guid: 99ac230b14770fa4fb8fff9d84f4d2b6
+    path: Assets/Telegraph.unity
+    guid: 3492552ea110c264ca6c8cdac6c153e5

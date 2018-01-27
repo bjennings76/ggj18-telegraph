@@ -62,9 +62,10 @@ namespace Dialog {
 					.OnComplete(() => m_Skip = true);
 		}
 
-		public void SetText(string text, bool skipTransition = false) {
+		public string SetText(string text, bool skipTransition = false) {
 			Text.text = CleanText(text);
 			m_Skip = skipTransition;
+			return Text.text;
 		}
 
 		public Tween FadeOut() {

@@ -2,10 +2,10 @@
 #right:Colm
 #back:Desk
 
--> Intro
+-> Intro 
 
 == Intro
-<H3> Telegraph </H3>
+<h3>Telegraph</h3>
 
 (This is text)
 +<i>Hello
@@ -16,6 +16,11 @@
 
 - Now we are back together.
 
+-> End
 
--> END
+== End
+
++ <i>This is the end of the story. Restart?</i>
+
+- -> Intro
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Unspeakable.Utils;
 using DG.Tweening;
@@ -12,6 +13,7 @@ namespace Dialog {
 		[Header("Settings")]
 
 		[SerializeField] private float m_NextDelay = 1;
+		[SerializeField] private MorseCodePlayer m_MorseCode;
 
 		[Header("UI")]
 
@@ -43,6 +45,9 @@ namespace Dialog {
 
 		private void StartStory() {
 			m_Story = new Story(m_InkJsonAsset.text);
+			m_LastBack = null;
+			m_LastRight = null;
+			m_LastLeft = null;
 			m_Canvas.transform.DestroyAllChildren();
 			m_Backdrop.DestroyAllChildren();
 			m_OnStageLeft.DestroyAllChildren();
@@ -77,6 +82,7 @@ namespace Dialog {
 			if (m_Story.canContinue) {
 				string text = m_Story.Continue().Trim();
 				Line nextLine = CreateContentView(text, m_ResponseIndex);
+				if (m_MorseCode != null) { m_MorseCode.PlayMorseCodeMessage(text); }
 				m_ResponseIndex = -1;
 
 				string back;
@@ -124,17 +130,19 @@ namespace Dialog {
 				return;
 			}
 
+			List<char> usedChars = new List<char>();
+
 			if (m_Story.currentChoices.Count > 0) {
 				// Fade old choices.
 				GetComponentsInChildren<Line>().Where(l => l.LineType == Line.Type.Player).ForEach(l => l.FadeOut());
 
 				for (int i = 0; i < m_Story.currentChoices.Count; i++) {
 					Choice choice = m_Story.currentChoices[i];
-					ChoiceLine button = CreateChoiceView(choice.text.Trim());
+					ChoiceLine button = CreateChoiceView(choice.text.Trim(), usedChars);
 					button.OnClick.AddListener(() => OnClickChoiceButton(button, choice));
 				}
 			} else {
-				ChoiceLine choice = CreateChoiceView("End of story.\nRestart?");
+				ChoiceLine choice = CreateChoiceView("End of story.\nRestart?", usedChars);
 				choice.OnClick.AddListener(StartStory);
 			}
 		}
@@ -170,10 +178,9 @@ namespace Dialog {
 			return m_NPCLinePrefab;
 		}
 
-		private ChoiceLine CreateChoiceView(string text) {
+		private ChoiceLine CreateChoiceView(string text, List<char> usedChars) {
 			ChoiceLine choice = Instantiate(m_PlayerChoicePrefab, m_Canvas.transform, false);
-			Line line = choice.GetComponent<Line>();
-			line.SetText(text);
+			choice.SetText(text, usedChars);
 			return choice;
 		}
 	}

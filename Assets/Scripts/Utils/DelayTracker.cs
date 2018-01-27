@@ -10,7 +10,7 @@ namespace Unspeakable.Utils {
 			return timeEvent;
 		}
 
-		public static FrameDelayEvent DealyFrame(Action onComplete) { return DelayFrames(1, onComplete); }
+		public static FrameDelayEvent DelayFrame(Action onComplete) { return DelayFrames(1, onComplete); }
 
 		public static FrameDelayEvent DelayFrames(int frameCount, Action onComplete) {
 			if (!IsValid) {
