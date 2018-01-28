@@ -118,6 +118,8 @@ MonoBehaviour:
   m_PlayTypeWriter: 0
   m_Type: {fileID: 8300000, guid: a7bf9cec54857f04e90da354c93c18e2, type: 3}
   m_Ding: {fileID: 8300000, guid: 7627a35c18aee484495b45b231583de7, type: 3}
+  m_MinTypeSoundDelay: 0.05
+  m_MaxTypeSoundDelay: 0.1
   OnComplete:
     m_PersistentCalls:
       m_Calls: []
@@ -180,7 +182,7 @@ MonoBehaviour:
     m_Left: 0
     m_Right: 0
     m_Top: 10
-    m_Bottom: 10
+    m_Bottom: 0
   m_ChildAlignment: 7
   m_Spacing: 0
   m_ChildForceExpandWidth: 1

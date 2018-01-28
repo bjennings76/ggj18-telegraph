@@ -16,6 +16,7 @@ namespace Telegraph {
 		}
 
 		[SerializeField] private Type m_Type = Type.Default;
+		[SerializeField] private bool m_PlayMorseCode;
 		[SerializeField] private float m_FadeDuration = 1;
 		[SerializeField] private float m_SlideDuration = 0.5f;
 		[SerializeField] private int m_HiddenBottomPadding = -10;
@@ -52,6 +53,7 @@ namespace Telegraph {
 		private LayoutGroup LayoutGroup { get { return !this ? null : m_LayoutGroup ? m_LayoutGroup : (m_LayoutGroup = GetComponent<LayoutGroup>()); } }
 
 		public Type LineType { get { return m_Type; } }
+		public bool PlayMorseCode { get { return m_PlayMorseCode; } }
 
 		private void Start() {
 			if (m_Skip) { return; }
@@ -83,6 +85,6 @@ namespace Telegraph {
 			return sequence;
 		}
 
-		private static string CleanText(string text) { return text.ReplaceRegex(@"\<[^>]+\>", ""); }
+		private static string CleanText(string text) { return text.ReplaceRegex(@"\<[^>]+\>", "").ReplaceRegex(@"\$\w+", "").Trim(); }
 	}
 }

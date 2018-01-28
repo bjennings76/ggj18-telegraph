@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using Unspeakable.Utils;
 
 namespace Telegraph {
-	public class TelegraphInput : MonoBehaviour {
+	public class TelegraphInput : Singleton<TelegraphInput> {
 		[SerializeField] private MorseCodePlayer m_MorseCodePlayer;
 		[SerializeField] private Text m_CodeOutput;
 		[SerializeField] private Text m_LetterOutput;
@@ -42,6 +42,14 @@ namespace Telegraph {
 			CheckDotTimer();
 		}
 
+		private void Clear() {
+			m_LetterOutput.text = "";
+			m_CodeOutput.text = "";
+			m_DotTimer = 0;
+			m_LetterEndTimer = 0;
+			Codes = "";
+		}
+
 		private bool m_LastOn;
 
 		private void CheckInput() {
@@ -54,7 +62,8 @@ namespace Telegraph {
 			m_LastOn = on;
 
 			if (on) {
-				Down();
+				if (InkPlayer.Instance.HasChoices) { Down(); }
+				else m_LastOn = false;
 			} else {
 				Up();
 			}
@@ -120,5 +129,7 @@ namespace Telegraph {
 				OnLetter(letter);
 			}
 		}
+
+		public static void Skip() { Instance.Clear(); }
 	}
 }
