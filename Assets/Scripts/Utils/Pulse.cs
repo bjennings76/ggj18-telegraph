@@ -5,18 +5,20 @@ namespace Unspeakable.Utils {
 	[RequireComponent(typeof(Graphic))]
 	public class Pulse : MonoBehaviour {
 		[SerializeField] private AnimationCurve m_Curve = AnimationCurve.EaseInOut(0, 1, 1, 0);
-		[SerializeField] private Graphic m_Graphic;
-		[SerializeField] private Color m_ColorA = new Color(1, 1, 1, 1);
-		[SerializeField] private Color m_ColorB = new Color(1, 1, 1, 0);
+		[SerializeField] private float m_FadedIn = 1f;
+		[SerializeField] private float m_FadeOut;
+
+		private Graphic[] m_Graphics;
 
 		private void Start() {
-			m_Graphic = m_Graphic ? m_Graphic : (m_Graphic = GetComponent<Graphic>());
-			if (m_Graphic) { m_ColorA = m_Graphic.color; }
+			m_Graphics = GetComponentsInChildren<Graphic>();
+
 			if (m_Curve.postWrapMode != WrapMode.Loop && m_Curve.postWrapMode != WrapMode.PingPong) { m_Curve.postWrapMode = WrapMode.PingPong; }
 		}
 
 		private void Update() {
-			if (m_Graphic) { m_Graphic.color = Color.LerpUnclamped(m_ColorB, m_ColorA, m_Curve.Evaluate(Time.time)); }
+			float alpha = Mathf.LerpUnclamped(m_FadedIn, m_FadeOut, m_Curve.Evaluate(Time.time));
+			m_Graphics.ForEach(g => g.color = new Color(g.color.r, g.color.g, g.color.b, alpha));
 		}
 	}
 }

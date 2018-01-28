@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Dialog {
+namespace Telegraph {
 	public class Line : MonoBehaviour {
 		public enum Type {
 			None,
@@ -20,7 +20,6 @@ namespace Dialog {
 		[SerializeField] private float m_SlideDuration = 0.5f;
 		[SerializeField] private int m_HiddenBottomPadding = -10;
 
-		private Canvas m_Canvas;
 		private RectTransform m_CanvasTransform;
 		private CanvasRenderer[] m_Renderers;
 		private Text m_Text;
@@ -39,9 +38,8 @@ namespace Dialog {
 			}
 		}
 
-		private Canvas Canvas { get { return !this ? null : m_Canvas ? m_Canvas : (m_Canvas = GetComponentInParent<Canvas>()); } }
 		private RectTransform CanvasTransform {
-			get { return !this ? null : m_CanvasTransform ? m_CanvasTransform : (m_CanvasTransform = Canvas.GetComponent<RectTransform>()); }
+			get { return !this ? null : m_CanvasTransform ? m_CanvasTransform : (m_CanvasTransform = transform.parent.GetComponent<RectTransform>()); }
 		}
 		private CanvasRenderer[] Renderers { get { return !this ? null : m_Renderers != null ? m_Renderers : (m_Renderers = GetComponentsInChildren<CanvasRenderer>()); } }
 		private Text Text { get { return !this ? null : m_Text ? m_Text : (m_Text = GetComponentInChildren<Text>()); } }

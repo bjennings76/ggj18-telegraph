@@ -1,23 +1,63 @@
-﻿using UnityEngine;
+﻿using System;
+using DG.Tweening;
+using UnityEngine;
 using UnityEngine.Collections;
+using UnityEngine.UI;
 using Unspeakable.Utils;
 
-namespace Dialog {
+namespace Telegraph {
 	public class TelegraphInput : MonoBehaviour {
-		[SerializeField] private InkPlayer m_InkPlayer;
 		[SerializeField] private MorseCodePlayer m_MorseCodePlayer;
+		[SerializeField] private Text m_CodeOutput;
+		[SerializeField] private Text m_LetterOutput;
 		[SerializeField] private float m_LetterEndDuration = 0.3f;
 		[SerializeField] private float m_MaxDotDuration = 0.13f;
 
 		[SerializeField, ReadOnly] private string m_Characters = "";
 		[SerializeField, ReadOnly] private string m_Codes = "";
-		
+
+		public static event Action<char> OnLetter;
+
 		private float m_DotTimer;
 		private float m_LetterEndTimer;
 
+		private string Codes {
+			get {
+				return m_Codes;
+			}
+			set {
+				m_Codes = value;
+				m_CodeOutput.text = m_Codes;
+			}
+		}
+
+		private void Start() {
+			m_LetterOutput.text = "";
+			m_CodeOutput.text = "";
+		}
+
 		private void Update() {
+			CheckInput();
 			CheckLetterTimer();
 			CheckDotTimer();
+		}
+
+		private bool m_LastOn;
+
+		private void CheckInput() {
+			bool on = Input.GetButton("tap");
+
+			if (on == m_LastOn) {
+				return;
+			}
+
+			m_LastOn = on;
+
+			if (on) {
+				Down();
+			} else {
+				Up();
+			}
 		}
 
 		private void CheckDotTimer() {
@@ -30,21 +70,20 @@ namespace Dialog {
 			if (m_LetterEndTimer > 0) {
 				m_LetterEndTimer -= Time.deltaTime;
 
-				if (m_LetterEndTimer <= 0 && !m_Codes.IsNullOrEmpty()) {
-					m_Characters += MorseCodePlayer.CodeToChar[m_Codes];
-					m_Codes = "";
+				if (m_LetterEndTimer <= 0 && !Codes.IsNullOrEmpty()) {
+					CompleteCharacter();
 				}
 			}
 		}
 
 		// Use this for initialization
-		private void OnMouseDown() {
+		private void Down() {
 			m_MorseCodePlayer.StartTap();
 			m_LetterEndTimer = -1;
 			m_DotTimer = m_MaxDotDuration;
 		}
 
-		private void OnMouseUp() {
+		private void Up() {
 			m_MorseCodePlayer.StopTap();
 
 			char newCode = m_DotTimer < 0 ? '-' : '.';
@@ -52,12 +91,33 @@ namespace Dialog {
 			m_DotTimer = -1;
 			m_LetterEndTimer = m_LetterEndDuration;
 
-			if (!MorseCodePlayer.CodeToChar.ContainsKey(m_Codes + newCode)) {
-				m_Characters += MorseCodePlayer.CodeToChar[m_Codes];
-				m_Codes = newCode + "";
+			if (!MorseCodePlayer.CodeToChar.ContainsKey(Codes + newCode)) {
+				CompleteCharacter();
+			} else {
+				Codes += newCode;
+				m_LetterOutput.text = MorseCodePlayer.CodeToChar[Codes].ToString();
+				m_LetterOutput.color = new Color(0, 0, 0, 0.5f);
+				m_LetterOutput.DOKill();
+				m_LetterOutput.DOColor(Color.clear, 2).SetDelay(1);
 			}
-			else {
-				m_Codes += newCode;
+
+			m_CodeOutput.text = Codes;
+		}
+
+		private void CompleteCharacter() {
+			char c = MorseCodePlayer.CodeToChar[Codes];
+			m_Characters = m_Characters + c;
+			Codes = "";
+			m_LetterOutput.text = c.ToString();
+			m_LetterOutput.color = Color.black;
+			m_LetterOutput.DOKill();
+			m_LetterOutput.DOColor(Color.clear, 2).SetDelay(1);
+			RaiseOnLetter(c);
+		}
+
+		private void RaiseOnLetter(char letter) {
+			if (OnLetter != null) {
+				OnLetter(letter);
 			}
 		}
 	}

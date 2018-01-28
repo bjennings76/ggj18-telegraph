@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Dialog {
+namespace Telegraph {
 	public static class StageAssets {
 		private static Dictionary<string, GameObject> m_BackdropLookup;
 		private static Dictionary<string, GameObject> m_CharacterLookup;

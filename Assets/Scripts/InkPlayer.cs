@@ -5,8 +5,9 @@ using Unspeakable.Utils;
 using DG.Tweening;
 using Ink.Runtime;
 using UnityEngine;
+using UnityEngine.UI;
 
-namespace Dialog {
+namespace Telegraph {
 	public class InkPlayer : MonoBehaviour {
 		[SerializeField] private TextAsset m_InkJsonAsset;
 
@@ -17,7 +18,7 @@ namespace Dialog {
 
 		[Header("UI")]
 
-		[SerializeField] private Canvas m_Canvas;
+		[SerializeField] private Transform m_Lines;
 		[SerializeField] private Line m_TitleLinePrefab;
 		[SerializeField] private Line m_SubtitleLinePrefab;
 		[SerializeField] private Line m_DefaultLinePrefab;
@@ -27,12 +28,14 @@ namespace Dialog {
 
 		[Header("Stage")]
 
+		[SerializeField] private SpriteRenderer m_Vignette;
 		[SerializeField] private Transform m_Backdrop;
 		[SerializeField] private Transform m_OnStageLeft;
 		[SerializeField] private Transform m_OnStageRight;
 		[SerializeField] private Transform m_OffStageLeft;
 		[SerializeField] private Transform m_OffStageRight;
 		[SerializeField] private float m_SlideDuration = 1;
+		[SerializeField] private Color m_DimColor = Color.gray;
 
 		private Story m_Story;
 		private int m_ResponseIndex;
@@ -41,14 +44,30 @@ namespace Dialog {
 		private string m_LastLeft;
 		private bool m_OnFirstLine;
 
+		private readonly List<ChoiceLine> m_CurrentChoiceLine = new List<ChoiceLine>();
+
 		private void OnEnable() { StartStory(); }
+
+		private void Update() {
+			// Keyboard cheat.
+			foreach (ChoiceLine choice in m_CurrentChoiceLine) {
+				if (Input.GetKeyDown(choice.Letter.ToLower())) {
+					choice.OnClick.Invoke();
+				}
+			}
+		}
+
+		public static void Restart() {
+			FindObjectOfType<InkPlayer>().StartStory();
+		}
 
 		private void StartStory() {
 			m_Story = new Story(m_InkJsonAsset.text);
 			m_LastBack = null;
 			m_LastRight = null;
 			m_LastLeft = null;
-			m_Canvas.transform.DestroyAllChildren();
+			m_Vignette.color = Color.white;
+			m_Lines.DestroyAllChildren();
 			m_Backdrop.DestroyAllChildren();
 			m_OnStageLeft.DestroyAllChildren();
 			m_OnStageRight.DestroyAllChildren();
@@ -59,7 +78,7 @@ namespace Dialog {
 
 		private void Refresh() {
 			float delay = 0;
-			foreach (Line line in m_Canvas.GetComponentsInChildren<Line>().Where(l => l)) {
+			foreach (Line line in m_Lines.GetComponentsInChildren<Line>().Where(l => l)) {
 				line.FadeOut().SetDelay(delay);
 				delay += 0.1f;
 			}
@@ -82,7 +101,6 @@ namespace Dialog {
 			if (m_Story.canContinue) {
 				string text = m_Story.Continue().Trim();
 				Line nextLine = CreateContentView(text, m_ResponseIndex);
-				if (m_MorseCode != null) { m_MorseCode.PlayMorseCodeMessage(text); }
 				m_ResponseIndex = -1;
 
 				string back;
@@ -116,11 +134,25 @@ namespace Dialog {
 					}
 				}
 
-				if (m_OnFirstLine) {
+				if (m_Story.currentTags.Contains("reveal")) {
+					m_Vignette.DOColor(Color.clear, 2);
+				} 
+
+				if (m_OnFirstLine && nextLine.LineType == Line.Type.Player) {
 					m_OnFirstLine = false;
 					Next();
 					return;
 				}
+
+				if (m_OnFirstLine) {
+					m_OnFirstLine = false;
+				}
+
+				if (m_MorseCode != null && (nextLine.LineType == Line.Type.NPC || nextLine.LineType == Line.Type.Player)) {
+					m_MorseCode.PlayMorseCodeMessage(text);
+				}
+
+				SetDimmers(nextLine.LineType);
 
 				TextFade tf = nextLine.GetComponentInChildren<TextFade>();
 
@@ -130,21 +162,37 @@ namespace Dialog {
 				return;
 			}
 
+			m_MorseCode.StopMessage();
+
 			List<char> usedChars = new List<char>();
 
+			// Fade old choices.
+			GetComponentsInChildren<Line>().Where(l => l.LineType == Line.Type.Player).ForEach(l => l.FadeOut());
+			m_CurrentChoiceLine.Clear();
 			if (m_Story.currentChoices.Count > 0) {
-				// Fade old choices.
-				GetComponentsInChildren<Line>().Where(l => l.LineType == Line.Type.Player).ForEach(l => l.FadeOut());
-
 				for (int i = 0; i < m_Story.currentChoices.Count; i++) {
 					Choice choice = m_Story.currentChoices[i];
-					ChoiceLine button = CreateChoiceView(choice.text.Trim(), usedChars);
-					button.OnClick.AddListener(() => OnClickChoiceButton(button, choice));
+					ChoiceLine choiceLine = CreateChoiceView(choice.text.Trim(), usedChars);
+					m_CurrentChoiceLine.Add(choiceLine);
+					choiceLine.OnClick.AddListener(() => OnClickChoiceButton(choiceLine, choice));
 				}
 			} else {
-				ChoiceLine choice = CreateChoiceView("End of story.\nRestart?", usedChars);
-				choice.OnClick.AddListener(StartStory);
+				ChoiceLine choiceLine = CreateChoiceView("End of story.\nRestart?", usedChars);
+				m_CurrentChoiceLine.Add(choiceLine);
+				choiceLine.OnClick.AddListener(StartStory);
 			}
+		}
+
+		private void SetDimmers(Line.Type type) {
+			SetDimmer(m_OnStageLeft, type == Line.Type.NPC);
+			SetDimmer(m_OnStageRight, type == Line.Type.Player);
+		}
+
+		private void SetDimmer(Component side, bool dim) {
+			side.GetComponentsInChildren<SpriteRenderer>().ForEach(r => {
+				r.DOKill();
+				r.DOColor(r.color = dim ? m_DimColor : Color.white, m_SlideDuration);
+			});
 		}
 
 		private void OnClickChoiceButton(ChoiceLine sender, Choice choice) {
@@ -156,7 +204,7 @@ namespace Dialog {
 
 		private Line CreateContentView(string text, int insertIndex = -1) {
 			Line linePrefab = GetLinePrefab(ref text);
-			Line storyLine = Instantiate(linePrefab, m_Canvas.transform, false);
+			Line storyLine = Instantiate(linePrefab, m_Lines, false);
 			storyLine.SetText(text, insertIndex >= 0);
 
 			if (insertIndex >= 0 && linePrefab == m_PlayerLinePrefab) {
@@ -174,12 +222,12 @@ namespace Dialog {
 				text = text.Trim('(', ')');
 				return m_DefaultLinePrefab;
 			}
-			if (text.Contains("<i>")) { return m_PlayerLinePrefab; }
-			return m_NPCLinePrefab;
+
+			return text.Contains("<i>") ? m_PlayerLinePrefab : m_NPCLinePrefab;
 		}
 
 		private ChoiceLine CreateChoiceView(string text, List<char> usedChars) {
-			ChoiceLine choice = Instantiate(m_PlayerChoicePrefab, m_Canvas.transform, false);
+			ChoiceLine choice = Instantiate(m_PlayerChoicePrefab, m_Lines, false);
 			choice.SetText(text, usedChars);
 			return choice;
 		}
