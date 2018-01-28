@@ -1,5 +1,5 @@
-#left:Player
-#right:Colm
+#left:
+#right:
 
 <h3>Telegraph</h3>
 <h4>by</h4>
@@ -8,6 +8,8 @@
 <h4>Michael McDonald</h4>
 
 -> Continue ->
+
+#left:Player
 
 <i>Dearest Dairy,</i> $thought
 
@@ -22,6 +24,7 @@
 
 === Letter ===
 
+#right:Colm
 (4th December 1938)
 (From: Colm O'Brien)
 (London, England)
