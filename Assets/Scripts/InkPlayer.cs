@@ -44,13 +44,13 @@ namespace Telegraph {
 		private string m_LastLeft;
 		private bool m_OnFirstLine;
 
-		private readonly List<ChoiceLine> m_CurrentChoiceLine = new List<ChoiceLine>();
+		private readonly List<ChoiceLine> m_CurrentChoiceLines = new List<ChoiceLine>();
 
 		private void OnEnable() { StartStory(); }
 
 		private void Update() {
 			// Keyboard cheat.
-			foreach (ChoiceLine choice in m_CurrentChoiceLine) {
+			foreach (ChoiceLine choice in m_CurrentChoiceLines) {
 				if (Input.GetKeyDown(choice.Letter.ToLower())) {
 					choice.OnClick.Invoke();
 				}
@@ -167,18 +167,18 @@ namespace Telegraph {
 			List<char> usedChars = new List<char>();
 
 			// Fade old choices.
-			GetComponentsInChildren<Line>().Where(l => l.LineType == Line.Type.Player).ForEach(l => l.FadeOut());
-			m_CurrentChoiceLine.Clear();
+			//GetComponentsInChildren<Line>().Where(l => l.LineType == Line.Type.Player).ForEach(l => l.FadeOut());
+			m_CurrentChoiceLines.Clear();
 			if (m_Story.currentChoices.Count > 0) {
 				for (int i = 0; i < m_Story.currentChoices.Count; i++) {
 					Choice choice = m_Story.currentChoices[i];
 					ChoiceLine choiceLine = CreateChoiceView(choice.text.Trim(), usedChars);
-					m_CurrentChoiceLine.Add(choiceLine);
+					m_CurrentChoiceLines.Add(choiceLine);
 					choiceLine.OnClick.AddListener(() => OnClickChoiceButton(choiceLine, choice));
 				}
 			} else {
 				ChoiceLine choiceLine = CreateChoiceView("End of story.\nRestart?", usedChars);
-				m_CurrentChoiceLine.Add(choiceLine);
+				m_CurrentChoiceLines.Add(choiceLine);
 				choiceLine.OnClick.AddListener(StartStory);
 			}
 		}
@@ -197,7 +197,7 @@ namespace Telegraph {
 
 		private void OnClickChoiceButton(ChoiceLine sender, Choice choice) {
 			m_ResponseIndex = sender.transform.GetSiblingIndex();
-			UnityUtils.DestroyObject(sender);
+			//UnityUtils.DestroyObject(sender);
 			m_Story.ChooseChoiceIndex(choice.index);
 			Refresh();
 		}

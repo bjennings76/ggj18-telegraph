@@ -28,6 +28,12 @@ namespace Telegraph {
 		private float m_Alpha;
 		private bool m_Skip;
 
+		public string DisplayText {
+			get {
+				return Text.text;
+			}
+		}
+
 		private float Alpha {
 			get { return m_Alpha; }
 			set {
