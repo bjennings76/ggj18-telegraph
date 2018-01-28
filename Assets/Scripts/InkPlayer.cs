@@ -44,6 +44,7 @@ namespace Telegraph {
 		private string m_LastLeft;
 
 		private readonly List<ChoiceLine> m_CurrentChoiceLines = new List<ChoiceLine>();
+		private Line m_LastChoice;
 
 		public bool HasChoices { get { return m_CurrentChoiceLines.Count > 0 && m_Story.currentChoices != null && m_Story.currentChoices.Count > 0; } }
 
@@ -81,9 +82,16 @@ namespace Telegraph {
 
 		private void Refresh() {
 			float delay = 0;
-			foreach (Line line in m_Lines.GetComponentsInChildren<Line>().Where(l => l)) {
+
+			foreach (Line line in m_Lines.GetComponentsInChildren<Line>().Where(l => l && l != m_LastChoice)) {
 				line.FadeOut().SetDelay(delay);
+				line.enabled = false;
 				delay += 0.1f;
+			}
+
+			if (m_LastChoice) {
+				m_LastChoice.FadeOut().SetDelay(10);
+				m_LastChoice.enabled = false;
 			}
 
 			Next();
@@ -191,9 +199,10 @@ namespace Telegraph {
 			});
 		}
 
-		private void OnClickChoiceButton(ChoiceLine sender, Choice choice) {
+		private void OnClickChoiceButton(ChoiceLine choiceLine, Choice choice) {
 			m_CurrentChoiceLines.Clear();
 			m_Story.ChooseChoiceIndex(choice.index);
+			m_LastChoice = choiceLine;
 			Refresh();
 		}
 

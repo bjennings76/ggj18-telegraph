@@ -474,7 +474,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  m_FadedIn: 0.7
+  m_FadedIn: 1
   m_FadeOut: 0
 --- !u!114 &114728749671884094
 MonoBehaviour:
@@ -502,6 +502,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Type: 6
+  m_PlayMorseCode: 0
   m_FadeDuration: 1
   m_SlideDuration: 0.5
   m_HiddenBottomPadding: -15

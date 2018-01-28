@@ -10,10 +10,13 @@ namespace Unspeakable.Utils {
 
 		private Graphic[] m_Graphics;
 
-		private void Start() {
+		private void OnEnable() {
 			m_Graphics = GetComponentsInChildren<Graphic>();
-
 			if (m_Curve.postWrapMode != WrapMode.Loop && m_Curve.postWrapMode != WrapMode.PingPong) { m_Curve.postWrapMode = WrapMode.PingPong; }
+		}
+
+		private void OnDisable() {
+			m_Graphics.ForEach(g => g.color = new Color(g.color.r, g.color.g, g.color.b, m_FadedIn));
 		}
 
 		private void Update() {

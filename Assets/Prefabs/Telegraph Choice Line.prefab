@@ -474,7 +474,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  m_FadedIn: 0.7
+  m_FadedIn: 1
   m_FadeOut: 0
 --- !u!114 &114728749671884094
 MonoBehaviour:

@@ -42,7 +42,7 @@
 (Your last letter brought much delight to everyone, they delight in hearing tales of the misadventures of your students and agree that you must be the most understanding of teachers to put up with them!)
 
 + [<i>He's read my letters, then? Aye, it warms the heart. $thought]
-+ [<i>He's sharing my intimacies with the boys? How embarrassing. $thought]
++ [<i>Sharing my intimacies with the boys? How embarrassing. $thought]
 
 - \(Work here has been neverending, which is useful for occupying my mind during the day and ensuring I fall quickly to sleep in the evening.)
 (I must confess that it's not just thoughts of missing you occupying my mind and keeping me awake.)

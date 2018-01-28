@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Unspeakable.Utils;
 
 namespace Telegraph {
 	public class ChoiceLine : Line {
@@ -15,6 +16,11 @@ namespace Telegraph {
 			get {
 				return m_Letter.text;
 			}
+		}
+
+		private void OnDisable() {
+			TelegraphInput.OnLetter -= OnLetter;
+			GetComponentsInChildren<Pulse>().ForEach(p => p.enabled = false);
 		}
 
 		public void SetText(string text, List<char> usedChars) {
@@ -38,10 +44,6 @@ namespace Telegraph {
 			if (letter.ToString() == m_Letter.text) {
 				OnClick.Invoke();
 			}
-		}
-
-		private void OnDestroy() {
-			TelegraphInput.OnLetter -= OnLetter;
 		}
 	}
 }
