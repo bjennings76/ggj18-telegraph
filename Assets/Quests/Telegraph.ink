@@ -3,7 +3,7 @@
 
 <h3>Telegraph</h3>
 <h4>by</h4>
-<h4>Cassandra Grey</h4>
+<h4>Cassandra Gray</h4>
 <h4>Brian Dean Jennings</h4>
 <h4>Michael McDonald</h4>
 
