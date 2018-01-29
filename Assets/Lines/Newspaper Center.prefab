@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 114706588672673572}
   - component: {fileID: 114574148183748716}
   m_Layer: 5
-  m_Name: Default Line
+  m_Name: Newspaper Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Type: 1
+  m_PlayMorseCode: 0
   m_FadeDuration: 1
   m_SlideDuration: 0.5
   m_HiddenBottomPadding: -15
@@ -205,8 +206,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
+    m_Left: 20
+    m_Right: 20
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 7

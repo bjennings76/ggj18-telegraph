@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Unspeakable.Utils;
 using DG.Tweening;
 using Ink.Runtime;
@@ -18,6 +19,7 @@ namespace Telegraph {
 		[Header("UI")]
 
 		[SerializeField] private Transform m_Lines;
+		[SerializeField] private LineLookup m_LineLookup;
 		[SerializeField] private Line m_TitleLinePrefab;
 		[SerializeField] private Line m_SubtitleLinePrefab;
 		[SerializeField] private Line m_DefaultLinePrefab;
@@ -112,46 +114,12 @@ namespace Telegraph {
 				string text = m_Story.Continue().Trim();
 
 				if (text.IsNullOrEmpty()) {
+					RunCommands();
 					Next();
 					return;
 				}
 
 				Line nextLine = CreateContentView(text);
-
-				string back;
-				string right;
-				string left;
-
-				// Check possible commands.
-				if (GetTagValue("back", out back) && back != m_LastBack) {
-					m_LastBack = back;
-					m_Backdrop.DestroyAllChildren();
-					if (StageAssets.Backdrops.ContainsKey(back)) { Instantiate(StageAssets.Backdrops[back], m_Backdrop, false); }
-				}
-
-				if (GetTagValue("right", out right) && right != m_LastRight) {
-					m_LastRight = right;
-					m_OnStageRight.DestroyAllChildren();
-					if (StageAssets.Characters.ContainsKey(right)) {
-						GameObject go = Instantiate(StageAssets.Characters[right], m_OnStageRight, false);
-						go.transform.position = m_OffStageRight.position;
-						go.transform.DOLocalMove(Vector3.zero, m_SlideDuration);
-					}
-				}
-
-				if (GetTagValue("left", out left) && left != m_LastLeft) {
-					m_LastLeft = left;
-					m_OnStageLeft.DestroyAllChildren();
-					if (StageAssets.Characters.ContainsKey(left)) {
-						GameObject go = Instantiate(StageAssets.Characters[left], m_OnStageLeft, false);
-						go.transform.position = m_OffStageLeft.position;
-						go.transform.DOLocalMove(Vector3.zero, m_SlideDuration);
-					}
-				}
-
-				if (m_Story.currentTags.Contains("reveal")) {
-					m_Vignette.DOColor(Color.clear, 2);
-				} 
 
 				if (m_MorseCode != null && nextLine.PlayMorseCode) {
 					m_MorseCode.PlayMorseCodeMessage(text);
@@ -207,6 +175,8 @@ namespace Telegraph {
 		}
 
 		private Line CreateContentView(string text) {
+			RunCommands(text);
+
 			Line linePrefab = GetLinePrefab(ref text);
 			Line storyLine = Instantiate(linePrefab, m_Lines, false);
 			storyLine.SetText(text);
@@ -214,7 +184,20 @@ namespace Telegraph {
 			return storyLine;
 		}
 
-		private Line GetLinePrefab(ref string text) {
+		private ChoiceLine CreateChoiceView(string text, List<char> usedChars) {
+			RunCommands(text, true);
+
+			ChoiceLine prefab = text.Contains("$thought") ? m_PlayerThoughtChoicePrefab : m_PlayerChoicePrefab;
+			ChoiceLine choice = Instantiate(prefab, m_Lines, false);
+			choice.SetText(text, usedChars);
+			return choice;
+		}
+
+		private string m_CurrentStyle;
+		private Line m_SelectedLinePrefab;
+		private ChoiceLine m_SelectedChoicePrefab;
+
+		private Line GetLinePrefab(ref string text, bool isChoice = false) {
 			if (text.Contains("<h4")) { return m_SubtitleLinePrefab; }
 			if (text.Contains("<h")) { return m_TitleLinePrefab; }
 
@@ -230,11 +213,98 @@ namespace Telegraph {
 			return m_NPCLinePrefab;
 		}
 
-		private ChoiceLine CreateChoiceView(string text, List<char> usedChars) {
-			ChoiceLine prefab = text.Contains("$thought") ? m_PlayerThoughtChoicePrefab : m_PlayerChoicePrefab;
-			ChoiceLine choice = Instantiate(prefab, m_Lines, false);
-			choice.SetText(text, usedChars);
-			return choice;
+		private void RunCommands(string text = null, bool isChoice = false) {
+			List<string> commands = GetCommands(text);
+			foreach (string command in commands) { RunCommand(command, isChoice); }
+		}
+
+		private List<string> GetCommands(string text) {
+			List<string> commandList = new List<string>(m_Story.currentTags);
+
+			if (text.IsNullOrEmpty()) { return commandList; }
+
+			MatchCollection matches = Regex.Matches(text, @"\$\w+(\:\w+)?", RegexOptions.IgnoreCase);
+			foreach (Match match in matches) { commandList.Add(match.Value); }
+			return commandList;
+		}
+
+		private void RunCommand(string commandString, bool isChoice) {
+			if (TrySetPrefab(isChoice ? commandString + "-choice" : commandString)) { return; }
+
+			if (commandString == "reveal") {
+				m_Vignette.DOColor(Color.clear, 2);
+				return;
+			}
+
+			if (commandString.Contains(":")) {
+				string[] pieces = commandString.Split(':');
+
+				string commandKey = pieces.FirstOrDefault();
+				string value = pieces.ElementAtOrDefault(1);
+
+				switch (commandKey) {
+					case "style":
+						m_CurrentStyle = value;
+						if (m_CurrentStyle.IsNullOrEmpty()) { return; }
+						TrySetPrefab(isChoice ? value + "-choice" : value);
+						return;
+
+					case "back":
+						if (value != m_LastBack) {
+							m_LastBack = value;
+							m_Backdrop.DestroyAllChildren();
+							if (value != null && StageAssets.Backdrops.ContainsKey(value)) { Instantiate(StageAssets.Backdrops[value], m_Backdrop, false); }
+						}
+						return;
+
+					case "right":
+						if (value != m_LastRight) {
+							m_LastRight = value;
+							m_OnStageRight.DestroyAllChildren();
+							if (value != null && StageAssets.Characters.ContainsKey(value)) {
+								GameObject go = Instantiate(StageAssets.Characters[value], m_OnStageRight, false);
+								go.transform.position = m_OffStageRight.position;
+								go.transform.DOLocalMove(Vector3.zero, m_SlideDuration);
+							}
+						}
+
+						return;
+					case "left":
+						if (value != m_LastLeft) {
+							m_LastLeft = value;
+							m_OnStageLeft.DestroyAllChildren();
+							if (value != null && StageAssets.Characters.ContainsKey(value)) {
+								GameObject go = Instantiate(StageAssets.Characters[value], m_OnStageLeft, false);
+								go.transform.position = m_OffStageLeft.position;
+								go.transform.DOLocalMove(Vector3.zero, m_SlideDuration);
+							}
+						}
+
+						return;
+
+					default:
+						break;
+				}
+			}
+
+			Debug.LogWarning("Nothing here to handle '" + commandString + "'.", this);
+		}
+
+		private bool TrySetPrefab(string command) {
+			if (!m_LineLookup.ContainsKey(command)) {
+				return false;
+			}
+
+			Line prefab = m_LineLookup[command];
+			ChoiceLine choicePrefab = prefab as ChoiceLine;
+
+			if (choicePrefab != null) {
+				m_SelectedChoicePrefab = choicePrefab;
+				return true;
+			}
+
+			m_SelectedLinePrefab = m_LineLookup[command];
+			return true;
 		}
 	}
 }

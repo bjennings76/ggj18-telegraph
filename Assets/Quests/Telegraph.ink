@@ -1,80 +1,95 @@
 #left:
 #right:
 
-<h3>Telegraph</h3>
-<h4>by</h4>
-<h4>Cassandra Gray</h4>
-<h4>Brian Dean Jennings</h4>
-<h4>Michael McDonald</h4>
+Telegraph #news-title
+by #news-subtitle
+Cassandra Gray
+Brian Dean Jennings
+Michael McDonald
 
 -> Continue ->
 
 #left:Player
+#style:write
 
-<i>Dearest Dairy,</i> $thought
+Dearest Dairy,
++ [I've received a letter from London today! Could it be from my sweet Colm?]
 
-+ [<i>I've received a letter from London today! Could it be from my sweet Colm? $thought]
 -> Letter
 
 === Continue ===
 
-+ [<i>\/\/ {~Continue|Next|Advance|Proceed|Unveil|Forthwith|More|Ready|Validate|Go on.|Carry on.|Into the brink.|Just so.|Anon...|Hence...|By your leave...|Lest...|Onward...|Pause...|So then...|So...|Also...|When...|And...|Then...|And then...}]
+#news
+
++ [\/\/ {~Continue|Next|Advance|Proceed|Unveil|Forthwith|More|Ready|Validate|Go on.|Carry on.|Into the brink.|Just so.|Anon...|Hence...|By your leave...|Lest...|Onward...|Pause...|So then...|So...|Also...|When...|And...|Then...|And then...}]
 
 - ->->
 
 === Letter ===
 
 #right:Colm
-(4th December 1938)
-(From: Colm O'Brien)
-(London, England)
+#style:write-npc
+ 
+4th December 1938
+From: Colm O'Brien
+London, England`
 
-(To: Deirdre MacKenna)
-(Belfast, Northern Ireland)
+To: Deirdre MacKenna
+Belfast, Northern Ireland`
 
-+ [<i>Joy! A letter from Colm. Always a pleasure. $thought]
-+ [<i>Oh no. A letter from Colm, no less. What has happened? $thought]
+#style:write
 
-- \(Dearest Deirdre, mo mhuirnín.)
++ [Joy! A letter from Colm. Always a pleasure.]
++ [Oh no. A letter from Colm, no less. What has happened?]
 
-(It has been nearly five years since we last met, yet I can still hear the enchanting sound of your voice in my ears.)
-(As I draw nearer to completing my apprenticeship I've begun counting the days until I may return to Belfast, and to your side.)
-(Your last letter brought much delight to everyone, they delight in hearing tales of the misadventures of your students and agree that you must be the most understanding of teachers to put up with them!)
+#style:write-npc
 
-+ [<i>He's read my letters, then? Aye, it warms the heart. $thought]
-+ [<i>Sharing my intimacies with the boys? How embarrassing. $thought]
+- Dearest Deirdre, mo mhuirnín.
 
-- \(Work here has been neverending, which is useful for occupying my mind during the day and ensuring I fall quickly to sleep in the evening.)
-(I must confess that it's not just thoughts of missing you occupying my mind and keeping me awake.)
-(Germany is only becoming more aggressive, and since September I've been hearing whispers in the street that England is preparing for war.)
+It has been nearly five years since we last met, yet I can still hear the enchanting sound of your voice in my ears.
+As I draw nearer to completing my apprenticeship I've begun counting the days until I may return to Belfast, and to your side.
+Your last letter brought much delight to everyone, they delight in hearing tales of the misadventures of your students and agree that you must be the most understanding of teachers to put up with them!
 
-<i>Please... don't say what I think you are about to say.</i> $thought
-+ [<i>I can barely bring myself to read on.</i> $thought]
++ [He's read my letters, then? Aye, it warms the heart. $write]
++ [Sharing my intimacies with the boys? How embarrassing. $write]
 
-- \(I've given it all the thought I can spare, and though as an irishman I will not be conscripted for war I feel it's my duty to volunteer for service in the British Army.)
-(I know what you will say, that we've been separated for too long already, that I need not risk my life, but I know I must do this. I've spent nigh on five years in England, and during this time it has been my home.)
+- Work here has been neverending, which is useful for occupying my mind during the day and ensuring I fall quickly to sleep in the evening.
+I must confess that it's not just thoughts of missing you occupying my mind and keeping me awake.
+Germany is only becoming more aggressive, and since September I've been hearing whispers in the street that England is preparing for war.
 
-+ [<i>Separated too long and then some. How long must we wait?</i> $thought]
+Please... don't say what I think you are about to say. $write
++ [I can barely bring myself to read on. $write]
 
-- \(Please forgive me mo mhuirnín dílis, a chuisle mo chroí.)
+- I've given it all the thought I can spare, and though as an irishman I will not be conscripted for war I feel it's my duty to volunteer for service in the British Army.
+I know what you will say, that we've been separated for too long already, that I need not risk my life, but I know I must do this. I've spent nigh on five years in England, and during this time it has been my home.
 
-(I await your reply.)
++ [Separated too long and then some. How long must we wait? $write]
 
-(Always and forever yours,)
-(Colm)
+- Please forgive me mo mhuirnín dílis, a chuisle mo chroí.
 
-<i>Preparing for war? What on earth is he thinking?!</i> $thought
-<i>Oh, Colm. You poor fool...</i> $thought
+I await your reply.
 
-+ [<i>Perhaps a telegram will persuade him.</i> $thought]
+Always and forever yours,
+Colm
+
+#style:write
+
+Preparing for war? What on earth is he thinking?!
+Oh, Colm. You poor fool...
+
++ [Perhaps a telegram will persuade him.]
 
 - -> December1938
 
 === December1938 ===
 
-<i>From: Deirdre MacKenna / To: Colm O'Brien / 16.12.1938
+#style:type
 
-<i>Are you mad STOP
+#from:Deirdre MacKenna
+#to:Colm O'Brien
+#date:16.12.1938
+
+Are you mad STOP
 
 + [<i>Recieve Telegram</i>]
 
