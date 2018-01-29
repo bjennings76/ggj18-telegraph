@@ -7,7 +7,7 @@ InputManager:
   m_Axes:
   - serializedVersion: 3
     m_Name: tap
-    descriptiveName: Telegraph On
+    descriptiveName: Tap Telegraph
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: space
@@ -23,7 +23,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: quit
-    descriptiveName: 
+    descriptiveName: Quit
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: escape
