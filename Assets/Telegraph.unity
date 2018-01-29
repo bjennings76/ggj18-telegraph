@@ -1624,9 +1624,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.051599935
+    y: 0
     width: 1
-    height: 0.89680016
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -1763,7 +1763,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22491254, guid: e26ca02b729f34e4e930e0bc301a3035, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 350
       objectReference: {fileID: 0}
     - target: {fileID: 22491254, guid: e26ca02b729f34e4e930e0bc301a3035, type: 2}
       propertyPath: m_AnchoredPosition.y
@@ -1771,7 +1771,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22491254, guid: e26ca02b729f34e4e930e0bc301a3035, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 350
       objectReference: {fileID: 0}
     - target: {fileID: 22491254, guid: e26ca02b729f34e4e930e0bc301a3035, type: 2}
       propertyPath: m_SizeDelta.y
@@ -1783,7 +1783,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22491254, guid: e26ca02b729f34e4e930e0bc301a3035, type: 2}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22491254, guid: e26ca02b729f34e4e930e0bc301a3035, type: 2}
       propertyPath: m_AnchorMax.x
@@ -1791,7 +1791,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22491254, guid: e26ca02b729f34e4e930e0bc301a3035, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22491254, guid: e26ca02b729f34e4e930e0bc301a3035, type: 2}
       propertyPath: m_Pivot.x
