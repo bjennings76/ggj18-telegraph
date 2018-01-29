@@ -54,7 +54,7 @@
 - \(I've given it all the thought I can spare, and though as an irishman I will not be conscripted for war I feel it's my duty to volunteer for service in the British Army.)
 (I know what you will say, that we've been separated for too long already, that I need not risk my life, but I know I must do this. I've spent nigh on five years in England, and during this time it has been my home.)
 
-+ [<i>Separated too long and thensome. How long must we wait?</i> $thought]
++ [<i>Separated too long and then some. How long must we wait?</i> $thought]
 
 - \(Please forgive me mo mhuirnín dílis, a chuisle mo chroí.)
 
@@ -176,7 +176,7 @@ From: Colm O'Brien / To: Deirdre MacKenna / 30.12.1940
 
 it reached me just prior to your last telegram STOP it was a ray of sun on the cloudiest day
 
-+ [<i>Surely this must all be over soon mhuirnin STOP I can scarecely bare it]
++ [<i>Surely this must all be over soon mhuirnin STOP I can scarcely bear it]
 
 From: Colm O'Brien / To: Deirdre MacKenna / 30.12.1940
 
@@ -273,7 +273,7 @@ I am beginning to lose hope that I will ever hear from you again
 -> Continue ->
 
 - \(The shelter was located in the crypt underneath the sanctuary, and I found myself wondering if all we had done by gathering there was save the city the cost of moving our bodies after the raid was over.)
-(There was at least two hundred of us huddled in there, and it was a sombre mood to be sure. To keep the little ones calm and drown out the sound of bombs falling we said prayers and sung hymns.)
+(There were at least two hundred of us huddled in there, and it was a sombre mood to be sure. To keep the little ones calm and drown out the sound of bombs falling we said prayers and sung hymns.)
 (Finally when the air had been silent for a good while we ventured out to see what was left. It seemed half the city was on fire. People have been fleeing the city ever since, making for Dromara, Newtownards, Lisburn and even Dublin.)
 
 -> Continue ->
@@ -356,7 +356,7 @@ I fear the mail system must truly be unsalvageable STOP it can be summarized sim
 
 From: Colm O'Brien / To: Deirdre MacKenna / 22.07.1941
 
-Thoughts of your letters keeps me going during the worst battles
+Thoughts of your letters keep me going during the worst battles
 
 - -> Continue ->
 
