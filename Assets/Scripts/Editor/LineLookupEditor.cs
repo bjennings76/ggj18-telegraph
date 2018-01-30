@@ -35,6 +35,7 @@ namespace Telegraph {
 		public override void OnInspectorGUI() {
 			serializedObject.Update();
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("m_DefaultLine"));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("m_DefaultSpace"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("m_DefaultChoiceLine"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("m_DefaultHeaderLine"));
 			m_Bindings.DoLayoutList();

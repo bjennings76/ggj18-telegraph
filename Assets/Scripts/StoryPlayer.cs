@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Unspeakable.Utils;
 using DG.Tweening;
 using Ink.Runtime;
 using UnityEngine;
+using UnityEngine.Collections;
 
 namespace Telegraph {
 	public class StoryPlayer : Singleton<StoryPlayer> {
@@ -41,7 +41,7 @@ namespace Telegraph {
 		private Line m_LastChoice;
 		
 		private HeaderInfo m_HeaderInfo;
-		private string m_CurrentStyle;
+		[SerializeField, ReadOnly] private string m_CurrentStyle;
 		private Line m_SelectedLinePrefab;
 		private ChoiceLine m_SelectedChoicePrefab;
 
@@ -60,10 +60,6 @@ namespace Telegraph {
 					TelegraphInput.Skip();
 				}
 			}
-		}
-
-		public static void Restart() {
-			Instance.StartStory();
 		}
 
 		private void StartStory() {
@@ -107,6 +103,8 @@ namespace Telegraph {
 		private void Next() {
 			if (m_Story.canContinue) {
 				m_HeaderInfo = null;
+				SetLine(m_CurrentStyle, m_LineLookup.DefaultLine);
+
 				string text = m_Story.Continue().Trim();
 				RunCommands(text);
 
@@ -118,8 +116,7 @@ namespace Telegraph {
 				} else if (text.IsNullOrEmpty()) {
 					Next();
 					return;
-				}
-				else {
+				} else {
 					nextLine = CreateContentView(text);
 				}
 
@@ -143,6 +140,8 @@ namespace Telegraph {
 
 			// Fade old choices.
 			m_CurrentChoiceLines.Clear();
+			SetChoiceLine(m_CurrentStyle + "-choice", m_LineLookup.DefaultChoice);
+
 			if (m_Story.currentChoices.Count > 0) {
 				for (int i = 0; i < m_Story.currentChoices.Count; i++) {
 					Choice choice = m_Story.currentChoices[i];
@@ -178,8 +177,8 @@ namespace Telegraph {
 			Refresh();
 		}
 
-		private Line CreateContentView(string text) {
-			Line linePrefab = m_SelectedLinePrefab ? m_SelectedLinePrefab : m_LineLookup.DefaultLine;
+		private Line CreateContentView(string text, Line overridePrefab = null) {
+			Line linePrefab = overridePrefab ? overridePrefab : m_SelectedLinePrefab ? m_SelectedLinePrefab : m_LineLookup.DefaultLine;
 			Line storyLine = Instantiate(linePrefab, m_Lines, false);
 			storyLine.SetText(text);
 
@@ -201,6 +200,8 @@ namespace Telegraph {
 			line.To = info.To;
 			return line;
 		}
+
+
 
 		private void RunCommands(string text, bool isChoice = false) {
 			List<string> commands = GetCommands(text);
@@ -227,6 +228,10 @@ namespace Telegraph {
 				if (isChoice) { SetChoiceLine(commandString + "-choice", m_LineLookup.DefaultChoice); }
 				else { SetLine(commandString, m_LineLookup.DefaultLine); }
 				return;
+			}
+
+			if (commandString == "space") {
+				CreateContentView(null, m_LineLookup.DefaultSpace);
 			}
 
 			if (isChoice && SetChoiceLine(commandString + "-choice")) { return; }
@@ -295,7 +300,7 @@ namespace Telegraph {
 		}
 
 		private bool SetLine(string command, Line defaultLine = null) {
-			Line choice = LookupLine<Line>(command);
+			Line choice = command.IsNullOrEmpty() ? null : LookupLine<Line>(command);
 			choice = choice ? choice : defaultLine;
 
 			if (choice) {
@@ -307,7 +312,7 @@ namespace Telegraph {
 		}
 
 		private bool SetChoiceLine(string command, ChoiceLine defaultLine = null) {
-			ChoiceLine choice = LookupLine<ChoiceLine>(command);
+			ChoiceLine choice = command.IsNullOrEmpty() ? null : LookupLine<ChoiceLine>(command);
 			choice = choice ? choice : defaultLine;
 
 			if (choice) {

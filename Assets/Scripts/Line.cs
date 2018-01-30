@@ -29,12 +29,6 @@ namespace Telegraph {
 		private float m_Alpha;
 		private bool m_Skip;
 
-		public string DisplayText {
-			get {
-				return Text.text;
-			}
-		}
-
 		private float Alpha {
 			get { return m_Alpha; }
 			set {
@@ -69,9 +63,10 @@ namespace Telegraph {
 		}
 
 		public string SetText(string text, bool skipTransition = false) {
-			Text.text = CleanText(text);
+			text = CleanText(text);
+			if (Text) { Text.text = CleanText(text); }
 			m_Skip = skipTransition;
-			return Text.text;
+			return text;
 		}
 
 		public Tween FadeOut() {
@@ -85,6 +80,6 @@ namespace Telegraph {
 			return sequence;
 		}
 
-		private static string CleanText(string text) { return text.ReplaceRegex(@"\<[^>]+\>", "").ReplaceRegex(@"\$\w+", "").Replace("`", "\n").Trim(); }
+		private static string CleanText(string text) { return text.IsNullOrEmpty() ? "" : text.ReplaceRegex(@"\<[^>]+\>", "").ReplaceRegex(@"\$\w+", "").Replace("`", "\n").Trim(); }
 	}
 }

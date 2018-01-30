@@ -34,8 +34,10 @@
 
 VAR date = ""
 
+#style:news
 Telegraph #news-title
-by #news-subtitle
+#style:news-subtitle
+by
 Cassandra Gray
 Brian Dean Jennings
 Michael McDonald
@@ -46,6 +48,7 @@ Michael McDonald
 
 #left:Player
 #style:write
+#space
 
 Dearest Dairy,
 + [I've received a letter from London today! Could it be from my sweet Colm?]
@@ -54,7 +57,7 @@ Dearest Dairy,
 #right:Colm
 #style:write-npc
 
-4th December 1938`<>
+- 4th December 1938`<>
 From: Colm O'Brien`<>
 London, England`
 
@@ -80,7 +83,7 @@ Germany is only becoming more aggressive, and since September I've been hearing 
 Please... don't say what I think you are about to say. $write
 + [I can barely bring myself to read on. $write]
 
-- I've given it all the thought I can spare, and though as an irishman I will not be conscripted for war I feel it's my duty to volunteer for service in the British Army.
+- I've given it all the thought I can spare, and though as an Irishman I will not be conscripted for war I feel it's my duty to volunteer for service in the British Army.
 I know what you will say, that we've been separated for too long already, that I need not risk my life, but I know I must do this. I've spent nigh on five years in England, and during this time it has been my home.
 
 + [Separated too long and then some. How long must we wait? $write]
@@ -306,6 +309,8 @@ Deirdre MacKenna
 -> TelegramNPC("23 April 1941") -> 
 Words cannot express the relief felt to receive word from you dear
 
+-> Continue ->
+
 -> Telegram("24 April 1941") -> 
 + [Further raids prevent me from writing too often STOP`You are in my thoughts]
 
@@ -353,6 +358,8 @@ mo chroi sorry for lapse in communication STOP`<>
 fighting has been intense STOP`<>
 I hoped perhaps my last letter might make it to you STOP`<>
 perhaps you could send me one
+
+-> Continue ->
 
 -> Telegram("20 July 1941") -> 
 + [I received no letter my love]
@@ -408,7 +415,7 @@ Look for me at the Port of Belfast and we can finally begin our life together
 #left:
 #reveal
 
-#style:write
+#style:news
 3rd September 1945``<>
 
 From: Alma Fitzgerald`<>
@@ -418,6 +425,8 @@ To: Colm O'Brien`<>
 \**URGENT**
 
 -> Continue ->
+
+#style: write
 
 Dearest Colm.
 
@@ -456,4 +465,5 @@ I don't expect you to forgive me, and I hope that in time you're able to love ag
 For once sincerely,`<>
 Alma Fitzgerald
 
+#news-title
 + [END] -> Start

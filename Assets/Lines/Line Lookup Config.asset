@@ -44,3 +44,5 @@ MonoBehaviour:
     type: 2}
   m_DefaultHeaderLine: {fileID: 114360958715622776, guid: 63ae216c951c9c343b6c5d633b8ceb78,
     type: 2}
+  m_DefaultSpace: {fileID: 114233784469791066, guid: 299b22fe1c3a4b644ac0986a7c901a22,
+    type: 2}
