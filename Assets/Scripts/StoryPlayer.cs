@@ -110,17 +110,18 @@ namespace Telegraph {
 				string text = m_Story.Continue().Trim();
 				RunCommands(text);
 
-				if (m_HeaderInfo != null) {
-					CreateHeaderView(m_HeaderInfo);
-					m_HeaderInfo = null;
-				}
+				Line nextLine = null;
 
-				if (text.IsNullOrEmpty()) {
+				if (m_HeaderInfo != null) {
+					nextLine = CreateHeaderView(m_HeaderInfo);
+					m_HeaderInfo = null;
+				} else if (text.IsNullOrEmpty()) {
 					Next();
 					return;
 				}
-
-				Line nextLine = CreateContentView(text);
+				else {
+					nextLine = CreateContentView(text);
+				}
 
 				if (m_MorseCode != null && nextLine.PlayMorseCode) {
 					m_MorseCode.PlayMorseCodeMessage(text);
@@ -195,7 +196,7 @@ namespace Telegraph {
 		private HeaderLine CreateHeaderView(HeaderInfo info) {
 			HeaderLine prefab = LookupLine(m_CurrentStyle + "-header", m_LineLookup.DefaultHeader);
 			HeaderLine line = Instantiate(prefab, m_Lines, false);
-			line.Date = info.Date;
+			line.Date = m_Story.variablesState["date"].ToString();
 			line.From = info.From;
 			line.To = info.To;
 			return line;
@@ -244,10 +245,6 @@ namespace Telegraph {
 
 					case "from":
 						HeaderInfo.From = value;
-						return;
-
-					case "date":
-						HeaderInfo.Date = m_Story.variablesState["date"].ToString();
 						return;
 
 					case "style":

@@ -15,7 +15,7 @@
 #from:Deirdre MacKenna
 #to:Colm O'Brien
 ~ date = d
-$header
+{date} $header
 ->->
 
 === TelegramNPC(d) ===
@@ -23,7 +23,7 @@ $header
 #from:Colm O'Brien
 #to:Deirdre MacKenna
 ~ date = d
-$header
+{date} $header
 ->->
 
 === Start ===
@@ -40,7 +40,7 @@ Brian Dean Jennings
 Michael McDonald
 
 // Temporary cheat:
-- -> December1938
+- -> test
 
 -> Continue ->
 
@@ -99,20 +99,12 @@ Colm
 Preparing for war? What on earth is he thinking?!`<>
 Oh, Colm. You poor fool.
 
--> December1938
-
-=== December1938 ===
-
-+ [Perhaps a telegram will persuade him...]
-
 - -> Telegram("16 Dec. 1938") ->
 + [Are you mad STOP]
 
 - -> TelegramNPC("17 Dec. 1938") -> 
 Is my duty STOP`<>
 Please forgive my making you wait for me
-
-+ [How stubborn he is... $write]
 
 - -> Telegram("19 Dec. 1938") ->
 + [Would wait 10 years STOP`Worried for your life]
@@ -126,6 +118,9 @@ Please forgive my making you wait for me
     -> TelegramNPC("20 Dec. 1938") -> 
     My family has a tradition of serving STOP`Following in my fathers and his fathers footsteps
 
+- -> test
+
+=== test ===
 - + [Something more convincing then...? $write]
 
 - -> Telegram("22 Dec. 1938") ->
