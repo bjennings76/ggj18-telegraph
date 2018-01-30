@@ -62,7 +62,7 @@ namespace Telegraph {
 			m_LastOn = on;
 
 			if (on) {
-				if (InkPlayer.Instance.HasChoices) { Down(); }
+				if (StoryPlayer.Instance.HasChoices) { Down(); }
 				else m_LastOn = false;
 			} else {
 				Up();

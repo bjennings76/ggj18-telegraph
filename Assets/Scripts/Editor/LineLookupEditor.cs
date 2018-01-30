@@ -36,6 +36,7 @@ namespace Telegraph {
 			serializedObject.Update();
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("m_DefaultLine"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("m_DefaultChoiceLine"));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("m_DefaultHeaderLine"));
 			m_Bindings.DoLayoutList();
 			serializedObject.ApplyModifiedProperties();
 		}

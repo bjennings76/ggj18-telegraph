@@ -8,7 +8,7 @@ using Ink.Runtime;
 using UnityEngine;
 
 namespace Telegraph {
-	public class InkPlayer : Singleton<InkPlayer> {
+	public class StoryPlayer : Singleton<StoryPlayer> {
 		[SerializeField] private TextAsset m_InkJsonAsset;
 
 		[Header("Settings")]
@@ -63,7 +63,7 @@ namespace Telegraph {
 		}
 
 		public static void Restart() {
-			FindObjectOfType<InkPlayer>().StartStory();
+			Instance.StartStory();
 		}
 
 		private void StartStory() {
@@ -85,6 +85,12 @@ namespace Telegraph {
 			float delay = 0;
 
 			foreach (Line line in m_Lines.GetComponentsInChildren<Line>().Where(l => l && l != m_LastChoice)) {
+				line.FadeOut().SetDelay(delay);
+				line.enabled = false;
+				delay += 0.1f;
+			}
+
+			foreach (HeaderLine line in m_Lines.GetComponentsInChildren<HeaderLine>()) {
 				line.FadeOut().SetDelay(delay);
 				line.enabled = false;
 				delay += 0.1f;
@@ -139,7 +145,9 @@ namespace Telegraph {
 			if (m_Story.currentChoices.Count > 0) {
 				for (int i = 0; i < m_Story.currentChoices.Count; i++) {
 					Choice choice = m_Story.currentChoices[i];
-					ChoiceLine choiceLine = CreateChoiceView(choice.text.Trim(), usedChars);
+					string text = choice.text.Trim();
+					RunCommands(text, true);
+					ChoiceLine choiceLine = CreateChoiceView(text, usedChars);
 					m_CurrentChoiceLines.Add(choiceLine);
 					choiceLine.OnClick.AddListener(() => OnClickChoiceButton(choiceLine, choice));
 				}
@@ -239,7 +247,7 @@ namespace Telegraph {
 						return;
 
 					case "date":
-						HeaderInfo.Date = value;
+						HeaderInfo.Date = m_Story.variablesState["date"].ToString();
 						return;
 
 					case "style":

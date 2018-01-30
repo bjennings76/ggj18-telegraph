@@ -40,3 +40,5 @@ MonoBehaviour:
     type: 2}
   m_DefaultChoiceLine: {fileID: 114950647953631590, guid: 3d9612f5315555041a61daf109940f0e,
     type: 2}
+  m_DefaultHeaderLine: {fileID: 114360958715622776, guid: 63ae216c951c9c343b6c5d633b8ceb78,
+    type: 2}
