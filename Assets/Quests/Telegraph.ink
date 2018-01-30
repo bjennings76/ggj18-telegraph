@@ -21,7 +21,7 @@ Dearest Dairy,
 
 #news
 
-+ [\/\/ {~Continue|Next|Advance|Proceed|Unveil|Forthwith|More|Ready|Validate|Go on.|Carry on.|Into the brink.|Just so.|Anon...|Hence...|By your leave...|Lest...|Onward...|Pause...|So then...|So...|Also...|When...|And...|Then...|And then...}]
++ [\/\/ {~Continue|Next|Advance|Proceed|Unveil|Forthwith|More|Ready|Validate|Go on.|Carry on.|Into the brink.|Just so.|Anon...|Hence...|By your leave...|Lest...|Onward...|Whence...|Pause...|So then...|So...|Also...|When...|And...|Then...|And then...}]
 
 - ->->
 
@@ -29,7 +29,7 @@ Dearest Dairy,
 
 #right:Colm
 #style:write-npc
- 
+
 4th December 1938`<>
 From: Colm O'Brien`<>
 London, England`
@@ -44,7 +44,7 @@ Belfast, Northern Ireland
 
 #style:write-npc
 
-- Dearest Deirdre, mo mhuirnín.
+- Dearest Deirdre, mo mhuirnin.
 
 It has been nearly five years since we last met, yet I can still hear the enchanting sound of your voice in my ears.
 As I draw nearer to completing my apprenticeship I've begun counting the days until I may return to Belfast, and to your side.
@@ -65,7 +65,7 @@ I know what you will say, that we've been separated for too long already, that I
 
 + [Separated too long and then some. How long must we wait? $write]
 
-- Please forgive me mo mhuirnín dílis, a chuisle mo chroí.
+- Please forgive me mo mhuirnin dilis, a chuisle mo chroi.
 
 I await your reply.
 
@@ -74,16 +74,16 @@ Colm
 
 #style:write
 
-Preparing for war? What on earth is he thinking?!
-Oh, Colm. You poor fool...
+Preparing for war? What on earth is he thinking?!`<>
+Oh, Colm. You poor fool.
 
-+ [Perhaps a telegram will persuade him.]
++ [Perhaps a telegram will persuade him...]
 
 - -> December1938
 
 === December1938 ===
 
-#style:type
+#style:telegram
 
 #from:Deirdre MacKenna
 #to:Colm O'Brien
@@ -91,7 +91,7 @@ Oh, Colm. You poor fool...
 
 Are you mad STOP
 
-+ [<i>Recieve Telegram</i>]
++ [<i>Recieve Telegram</i> $default]
 
 - From: Colm O'Brien / To: Deirdre MacKenna / 17.12.1938
 
@@ -175,15 +175,18 @@ From: Colm O'Brien / To: Deirdre MacKenna / 16.10.1939
 
 Always mo chroi
 
-- \(The war intensifies. Colm and Dee exchange letters and telegrams through the year, Colm telling stories of his fellow soldiers and his time in France and Dee regaling them all with stories of her students, and life in Belfast. Together they plan for the future and Colm's return from the war, both refusing to acknowledge that it may never happen.)
+#style:news
+- The war intensifies. Colm and Dee exchange letters and telegrams through the year, Colm telling stories of his fellow soldiers and his time in France and Dee regaling them all with stories of her students, and life in Belfast. Together they plan for the future and Colm's return from the war, both refusing to acknowledge that it may never happen.
 
 -> Continue ->
+
+#style:telegraph
 
 - From: Colm O'Brien / To: Deirdre MacKenna / 23.12.1940
 
 My heart is heavy at the thought of another Christmas away mo chroi
 
-<i>From: Deirdre MacKenna / To: Colm O'Brien / 24.12.1940
+<i>From: Deirdre MacKenna `To: Colm O'Brien / 24.12.1940
 
 + [<i>Pray my last letter reach you before Christmas, that it may give you comfort]
 
@@ -211,15 +214,15 @@ Received word of raid in Belfast praying for news of your safety mo mhuirnin
 
 - \(11th April 1941)
 
-(From: Deirdre MacKenna)
-(Belfast, Northern Ireland)
+From: Deirdre MacKenna<>`
+Belfast, Northern Ireland
 
 (To: Colm O'Brien)
 (Cyrenaica, Libya)
 
 -> Continue ->
 
-- \(My Dearest, Mo mhuirnín dílis,)
+- \(My Dearest, Mo mhuirnin dilis,)
 
 (I don't have much time to write, I just wanted to assure you I am safe and well for now.)
 (I took shelter under the stairs, but the bombs fell on the other side of the city and caused minimal damage.)
@@ -229,7 +232,7 @@ Received word of raid in Belfast praying for news of your safety mo mhuirnin
 
 - \(Easter nears soon, and I'm planning to attend the church service with Mam and Da before Easter Sunday lunch.)
 (I've bought a new hat for the occasion and I must say it rather brings out my eyes and makes me feel quite fashionable.)
-(I will write more soon Mo Stór, write back when you can.)
+(I will write more soon Mo Stor, write back when you can.)
 
 -> Continue ->
 
@@ -444,7 +447,7 @@ It has finally happened my love STOP we are to return home STOP Look for me at t
 
 -> Continue ->
 
-- \(Staring at that telegram I felt like I was losing my husband all over again, I could not bring myself to send it. For four days I tried to send it.) 
+- \(Staring at that telegram I felt like I was losing my husband all over again, I could not bring myself to send it. For four days I tried to send it.)
 (I read your telegrams coming in day after day, begging for word from Deirdre and I couldn't bring myself to deliver such a blow, so I sent the telegram on the 20th, pretending to be Deirdre.)
 
 -> Continue ->

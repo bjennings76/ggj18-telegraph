@@ -44,7 +44,6 @@ namespace Telegraph {
 		private string m_CurrentStyle;
 		private Line m_SelectedLinePrefab;
 		private ChoiceLine m_SelectedChoicePrefab;
-		private HeaderLine m_SelectedHeaderPrefab;
 
 		private HeaderInfo HeaderInfo { get { return m_HeaderInfo ?? (m_HeaderInfo = new HeaderInfo()); } }
 
@@ -99,22 +98,18 @@ namespace Telegraph {
 			Next();
 		}
 
-		private bool GetTagValue(string tagKey, out string tagValue) {
-			string tagString = m_Story.currentTags.FirstOrDefault(t => t.StartsWith(tagKey + ":", StringComparison.OrdinalIgnoreCase));
-			if (tagString.IsNullOrEmpty()) {
-				tagValue = null;
-				return false;
-			}
-			tagValue = tagString.Split(':').ElementAtOrDefault(1);
-			return true;
-		}
-
 		private void Next() {
 			if (m_Story.canContinue) {
+				m_HeaderInfo = null;
 				string text = m_Story.Continue().Trim();
+				RunCommands(text);
+
+				if (m_HeaderInfo != null) {
+					CreateHeaderView(m_HeaderInfo);
+					m_HeaderInfo = null;
+				}
 
 				if (text.IsNullOrEmpty()) {
-					RunCommands();
 					Next();
 					return;
 				}
@@ -175,8 +170,6 @@ namespace Telegraph {
 		}
 
 		private Line CreateContentView(string text) {
-			RunCommands(text);
-
 			Line linePrefab = m_SelectedLinePrefab ? m_SelectedLinePrefab : m_LineLookup.DefaultLine;
 			Line storyLine = Instantiate(linePrefab, m_Lines, false);
 			storyLine.SetText(text);
@@ -185,21 +178,24 @@ namespace Telegraph {
 		}
 
 		private ChoiceLine CreateChoiceView(string text, List<char> usedChars) {
-			RunCommands(text, true);
-
 			ChoiceLine prefab = m_SelectedChoicePrefab ? m_SelectedChoicePrefab : m_LineLookup.DefaultChoice;
 			ChoiceLine choice = Instantiate(prefab, m_Lines, false);
 			choice.SetText(text, usedChars);
 			return choice;
 		}
 
-		private void RunCommands(string text = null, bool isChoice = false) {
+		private HeaderLine CreateHeaderView(HeaderInfo info) {
+			HeaderLine prefab = LookupLine(m_CurrentStyle + "-header", m_LineLookup.DefaultHeader);
+			HeaderLine line = Instantiate(prefab, m_Lines, false);
+			line.Date = info.Date;
+			line.From = info.From;
+			line.To = info.To;
+			return line;
+		}
+
+		private void RunCommands(string text, bool isChoice = false) {
 			List<string> commands = GetCommands(text);
 			foreach (string command in commands) { RunCommand(command, isChoice); }
-
-			if (m_HeaderInfo != null) {
-				m_SelectedHeaderPrefab = GetLine(m_CurrentStyle + "-header", m_LineLookup.DefaultHeader);
-			}
 		}
 
 		private List<string> GetCommands(string text) {
@@ -218,21 +214,14 @@ namespace Telegraph {
 				return;
 			}
 
-			if (isChoice) {
-				ChoiceLine choiceLine = GetLine<ChoiceLine>(commandString + "-choice");
-
-				if (choiceLine) {
-					m_SelectedChoicePrefab = choiceLine;
-					return;
-				}
-			}
-
-			Line line = GetLine<Line>(commandString + "-choice");
-
-			if (line) {
-				m_SelectedLinePrefab = line;
+			if (commandString == "default") {
+				if (isChoice) { SetChoiceLine(commandString + "-choice", m_LineLookup.DefaultChoice); }
+				else { SetLine(commandString, m_LineLookup.DefaultLine); }
 				return;
 			}
+
+			if (isChoice && SetChoiceLine(commandString + "-choice")) { return; }
+			if (SetLine(commandString)) { return; }
 
 			if (commandString.Contains(":")) {
 				string[] pieces = commandString.Split(':');
@@ -254,9 +243,9 @@ namespace Telegraph {
 						return;
 
 					case "style":
-						m_CurrentStyle = value;
-						if (m_CurrentStyle.IsNullOrEmpty()) { return; }
-						GetLine(isChoice ? value + "-choice" : value);
+						m_CurrentStyle = value == "default" ? null : value;
+						SetLine(m_CurrentStyle, m_LineLookup.DefaultLine);
+						SetChoiceLine(m_CurrentStyle + "-choice", m_LineLookup.DefaultChoice);
 						return;
 
 					case "back":
@@ -293,14 +282,38 @@ namespace Telegraph {
 						return;
 
 					default:
+						Debug.LogWarning("Nothing here to handle '" + commandString + "'.", this);
 						break;
 				}
 			}
 
-			Debug.LogWarning("Nothing here to handle '" + commandString + "'.", this);
 		}
 
-		private T GetLine<T>(string command, T defaultLine = null) where T : Line {
+		private bool SetLine(string command, Line defaultLine = null) {
+			Line choice = LookupLine<Line>(command);
+			choice = choice ? choice : defaultLine;
+
+			if (choice) {
+				m_SelectedLinePrefab = choice;
+				return true;
+			}
+
+			return false;
+		}
+
+		private bool SetChoiceLine(string command, ChoiceLine defaultLine = null) {
+			ChoiceLine choice = LookupLine<ChoiceLine>(command);
+			choice = choice ? choice : defaultLine;
+
+			if (choice) {
+				m_SelectedChoicePrefab = choice;
+				return true;
+			}
+
+			return false;
+		}
+
+		private T LookupLine<T>(string command, T defaultLine = null) where T : Line {
 			if (!m_LineLookup.ContainsKey(command)) {
 				return defaultLine;
 			}
