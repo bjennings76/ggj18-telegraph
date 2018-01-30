@@ -213,7 +213,7 @@ namespace Telegraph {
 			if (text.IsNullOrEmpty()) { return commandList; }
 
 			MatchCollection matches = Regex.Matches(text, @"\$\w+(\:\w+)?", RegexOptions.IgnoreCase);
-			foreach (Match match in matches) { commandList.Add(match.Value); }
+			foreach (Match match in matches) { commandList.Add(match.Value.TrimStart('$')); }
 			return commandList;
 		}
 
@@ -331,6 +331,5 @@ namespace Telegraph {
 	internal class HeaderInfo {
 		public string To;
 		public string From;
-		public string Date;
 	}
 }

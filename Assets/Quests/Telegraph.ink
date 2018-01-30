@@ -1,3 +1,4 @@
+
 -> Start
 
 === Continue ===
@@ -38,9 +39,6 @@ by #news-subtitle
 Cassandra Gray
 Brian Dean Jennings
 Michael McDonald
-
-// Temporary cheat:
-- -> test
 
 -> Continue ->
 
