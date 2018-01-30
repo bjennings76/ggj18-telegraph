@@ -465,5 +465,5 @@ I don't expect you to forgive me, and I hope that in time you're able to love ag
 For once sincerely,`<>
 Alma Fitzgerald
 
-#news-title
+#style:telegram
 + [END] -> Start
