@@ -426,7 +426,7 @@ To: Colm O'Brien`<>
 
 -> Continue ->
 
-#style: write
+#style:write
 
 Dearest Colm.
 
