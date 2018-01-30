@@ -85,6 +85,6 @@ namespace Telegraph {
 			return sequence;
 		}
 
-		private static string CleanText(string text) { return text.ReplaceRegex(@"\<[^>]+\>", "").ReplaceRegex(@"\$\w+", "").Trim(); }
+		private static string CleanText(string text) { return text.ReplaceRegex(@"\<[^>]+\>", "").ReplaceRegex(@"\$\w+", "").Replace("`", "\n").Trim(); }
 	}
 }

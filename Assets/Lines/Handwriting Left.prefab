@@ -232,8 +232,10 @@ MonoBehaviour:
   m_PlayTypeWriter: 0
   m_Type: {fileID: 8300000, guid: 8f97c9400e23f2849b0c5ddc2fe8f32e, type: 3}
   m_Ding: {fileID: 0}
-  m_MinTypeSoundDelay: 0.2
-  m_MaxTypeSoundDelay: 0.5
+  m_MinTypeSoundDelay: 0.5
+  m_MaxTypeSoundDelay: 0.8
+  m_MinPitch: 0.95
+  m_MaxPitch: 1.05
   OnComplete:
     m_PersistentCalls:
       m_Calls: []

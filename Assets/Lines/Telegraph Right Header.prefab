@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 114611754944785394}
   - component: {fileID: 114360958715622776}
   m_Layer: 5
-  m_Name: Telegraph Left Header
+  m_Name: Telegraph Right Header
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f19da967b604083b586a796a3a4004d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Type: 2
+  m_Type: 3
   m_PlayMorseCode: 0
   m_FadeDuration: 1
   m_SlideDuration: 0.5
@@ -534,6 +534,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -20, y: 0}
+  m_AnchoredPosition: {x: 20, y: 0}
   m_SizeDelta: {x: -40, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 
 namespace Telegraph {
-	public class TelegraphHeader : Line {
+	public class HeaderLine : Line {
 		[SerializeField] private Text m_Date;
 		[SerializeField] private Text m_To;
 		[SerializeField] private Text m_From;

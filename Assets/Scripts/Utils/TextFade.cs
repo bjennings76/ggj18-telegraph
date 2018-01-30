@@ -20,6 +20,8 @@ namespace Unspeakable.Utils {
 		[SerializeField] private AudioClip m_Ding;
 		[SerializeField] private float m_MinTypeSoundDelay = 0.05f;
 		[SerializeField] private float m_MaxTypeSoundDelay = 0.1f;
+		[SerializeField] private float m_MinPitch = 1f;
+		[SerializeField] private float m_MaxPitch = 1f;
 
 		private AudioSource m_AudioSource;
 
@@ -116,19 +118,21 @@ namespace Unspeakable.Utils {
 			// Once all the characters are opaque, 
 			// ditch the unnecessary markup and end the routine.
 			m_Text.text = text;
+
 			// Mark the fade transition as finished.
 			// This can also fire an event/message if you want to signal UI.
 			m_Fade = null;
 
-			if (m_Ding != null) AudioSource.PlayOneShot(m_Ding);
+			if (m_Ding != null) { AudioSource.PlayOneShot(m_Ding); }
 
 			OnComplete.Invoke();
 		}
 
 		private void Type() {
-			if (m_Type != null && (m_LastTypeSound.Approximately(0) || m_LastTypeSound + m_NextTypeDelay < Time.time)) {
+			if (m_Type != null && Time.time > m_LastTypeSound + m_NextTypeDelay) {
 				m_LastTypeSound = Time.time;
 				m_NextTypeDelay = Random.Range(m_MinTypeSoundDelay, m_MaxTypeSoundDelay);
+				AudioSource.pitch = Random.Range(m_MinPitch, m_MaxPitch);
 				AudioSource.PlayOneShot(m_Type);
 			}
 		}

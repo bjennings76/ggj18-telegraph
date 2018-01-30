@@ -20,14 +20,6 @@ namespace Telegraph {
 
 		[SerializeField] private Transform m_Lines;
 		[SerializeField] private LineLookup m_LineLookup;
-		[SerializeField] private Line m_TitleLinePrefab;
-		[SerializeField] private Line m_SubtitleLinePrefab;
-		[SerializeField] private Line m_DefaultLinePrefab;
-		[SerializeField] private Line m_NPCLinePrefab;
-		[SerializeField] private Line m_PlayerLinePrefab;
-		[SerializeField] private Line m_PlayerThoughtLinePrefab;
-		[SerializeField] private ChoiceLine m_PlayerChoicePrefab;
-		[SerializeField] private ChoiceLine m_PlayerThoughtChoicePrefab;
 
 		[Header("Stage")]
 
@@ -47,6 +39,14 @@ namespace Telegraph {
 
 		private readonly List<ChoiceLine> m_CurrentChoiceLines = new List<ChoiceLine>();
 		private Line m_LastChoice;
+		
+		private HeaderInfo m_HeaderInfo;
+		private string m_CurrentStyle;
+		private Line m_SelectedLinePrefab;
+		private ChoiceLine m_SelectedChoicePrefab;
+		private HeaderLine m_SelectedHeaderPrefab;
+
+		private HeaderInfo HeaderInfo { get { return m_HeaderInfo ?? (m_HeaderInfo = new HeaderInfo()); } }
 
 		public bool HasChoices { get { return m_CurrentChoiceLines.Count > 0 && m_Story.currentChoices != null && m_Story.currentChoices.Count > 0; } }
 
@@ -177,7 +177,7 @@ namespace Telegraph {
 		private Line CreateContentView(string text) {
 			RunCommands(text);
 
-			Line linePrefab = GetLinePrefab(ref text);
+			Line linePrefab = m_SelectedLinePrefab ? m_SelectedLinePrefab : m_LineLookup.DefaultLine;
 			Line storyLine = Instantiate(linePrefab, m_Lines, false);
 			storyLine.SetText(text);
 
@@ -187,35 +187,19 @@ namespace Telegraph {
 		private ChoiceLine CreateChoiceView(string text, List<char> usedChars) {
 			RunCommands(text, true);
 
-			ChoiceLine prefab = text.Contains("$thought") ? m_PlayerThoughtChoicePrefab : m_PlayerChoicePrefab;
+			ChoiceLine prefab = m_SelectedChoicePrefab ? m_SelectedChoicePrefab : m_LineLookup.DefaultChoice;
 			ChoiceLine choice = Instantiate(prefab, m_Lines, false);
 			choice.SetText(text, usedChars);
 			return choice;
 		}
 
-		private string m_CurrentStyle;
-		private Line m_SelectedLinePrefab;
-		private ChoiceLine m_SelectedChoicePrefab;
-
-		private Line GetLinePrefab(ref string text, bool isChoice = false) {
-			if (text.Contains("<h4")) { return m_SubtitleLinePrefab; }
-			if (text.Contains("<h")) { return m_TitleLinePrefab; }
-
-			if (text.StartsWith("(") || m_Story.currentTags.Contains("desc") || m_Story.currentTags.Contains("writing")) {
-				text = text.Trim('(', ')');
-				return m_DefaultLinePrefab;
-			}
-
-			if (text.Contains("<i>")) {
-				return text.Contains("$thought") ? m_PlayerThoughtLinePrefab : m_PlayerLinePrefab;
-			}
-
-			return m_NPCLinePrefab;
-		}
-
 		private void RunCommands(string text = null, bool isChoice = false) {
 			List<string> commands = GetCommands(text);
 			foreach (string command in commands) { RunCommand(command, isChoice); }
+
+			if (m_HeaderInfo != null) {
+				m_SelectedHeaderPrefab = GetLine(m_CurrentStyle + "-header", m_LineLookup.DefaultHeader);
+			}
 		}
 
 		private List<string> GetCommands(string text) {
@@ -229,10 +213,24 @@ namespace Telegraph {
 		}
 
 		private void RunCommand(string commandString, bool isChoice) {
-			if (TrySetPrefab(isChoice ? commandString + "-choice" : commandString)) { return; }
-
 			if (commandString == "reveal") {
 				m_Vignette.DOColor(Color.clear, 2);
+				return;
+			}
+
+			if (isChoice) {
+				ChoiceLine choiceLine = GetLine<ChoiceLine>(commandString + "-choice");
+
+				if (choiceLine) {
+					m_SelectedChoicePrefab = choiceLine;
+					return;
+				}
+			}
+
+			Line line = GetLine<Line>(commandString + "-choice");
+
+			if (line) {
+				m_SelectedLinePrefab = line;
 				return;
 			}
 
@@ -243,10 +241,22 @@ namespace Telegraph {
 				string value = pieces.ElementAtOrDefault(1);
 
 				switch (commandKey) {
+					case "to":
+						HeaderInfo.To = value;
+						return;
+
+					case "from":
+						HeaderInfo.From = value;
+						return;
+
+					case "date":
+						HeaderInfo.Date = value;
+						return;
+
 					case "style":
 						m_CurrentStyle = value;
 						if (m_CurrentStyle.IsNullOrEmpty()) { return; }
-						TrySetPrefab(isChoice ? value + "-choice" : value);
+						GetLine(isChoice ? value + "-choice" : value);
 						return;
 
 					case "back":
@@ -290,21 +300,19 @@ namespace Telegraph {
 			Debug.LogWarning("Nothing here to handle '" + commandString + "'.", this);
 		}
 
-		private bool TrySetPrefab(string command) {
+		private T GetLine<T>(string command, T defaultLine = null) where T : Line {
 			if (!m_LineLookup.ContainsKey(command)) {
-				return false;
+				return defaultLine;
 			}
 
-			Line prefab = m_LineLookup[command];
-			ChoiceLine choicePrefab = prefab as ChoiceLine;
-
-			if (choicePrefab != null) {
-				m_SelectedChoicePrefab = choicePrefab;
-				return true;
-			}
-
-			m_SelectedLinePrefab = m_LineLookup[command];
-			return true;
+			T prefab = m_LineLookup[command] as T;
+			return prefab ? prefab : defaultLine;
 		}
+	}
+
+	internal class HeaderInfo {
+		public string To;
+		public string From;
+		public string Date;
 	}
 }

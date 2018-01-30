@@ -9,6 +9,8 @@ namespace Telegraph {
 	public class LineLookup : ScriptableObject {
 		[SerializeField] private Binding[] m_Bindings;
 		[SerializeField] private Line m_DefaultLine;
+		[SerializeField] private ChoiceLine m_DefaultChoiceLine;
+		[SerializeField] private HeaderLine m_DefaultHeaderLine;
 
 		private Dictionary<string, Line> m_LineDictionary;
 
@@ -19,6 +21,8 @@ namespace Telegraph {
 		}
 
 		public Line DefaultLine { get { return m_DefaultLine; } }
+		public ChoiceLine DefaultChoice { get { return m_DefaultChoiceLine; } }
+		public HeaderLine DefaultHeader { get { return m_DefaultHeaderLine; } }
 
 		public Line this[string key] {
 			get {

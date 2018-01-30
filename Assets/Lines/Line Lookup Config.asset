@@ -28,6 +28,8 @@ MonoBehaviour:
     Tag: news-subtitle
   - Line: {fileID: 114889979747379302, guid: 7ce4b8baf237b304386bd132d81aa3ae, type: 2}
     Tag: telegram
+  - Line: {fileID: 114360958715622776, guid: 63ae216c951c9c343b6c5d633b8ceb78, type: 2}
+    Tag: telegram-header
   - Line: {fileID: 114921401985061804, guid: e26ca02b729f34e4e930e0bc301a3035, type: 2}
     Tag: telegram-choice
   - Line: {fileID: 114390584959201848, guid: 6ad80a709091e8741a0a4998779695f3, type: 2}
@@ -35,4 +37,6 @@ MonoBehaviour:
   - Line: {fileID: 114233784469791066, guid: 299b22fe1c3a4b644ac0986a7c901a22, type: 2}
     Tag: space
   m_DefaultLine: {fileID: 114574148183748716, guid: 610f8cc23bf07ec4aab169369569d24f,
+    type: 2}
+  m_DefaultChoiceLine: {fileID: 114950647953631590, guid: 3d9612f5315555041a61daf109940f0e,
     type: 2}

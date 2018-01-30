@@ -30,12 +30,12 @@ Dearest Dairy,
 #right:Colm
 #style:write-npc
  
-4th December 1938
-From: Colm O'Brien
+4th December 1938`<>
+From: Colm O'Brien`<>
 London, England`
 
-To: Deirdre MacKenna
-Belfast, Northern Ireland`
+To: Deirdre MacKenna`<>
+Belfast, Northern Ireland
 
 #style:write
 
@@ -69,7 +69,7 @@ I know what you will say, that we've been separated for too long already, that I
 
 I await your reply.
 
-Always and forever yours,
+Always and forever yours,`<>
 Colm
 
 #style:write
